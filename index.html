@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote Designer</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Bangers&family=Dancing+Script&family=Inter:wght@400;700&family=Lato&family=Lobster&family=Merriweather&family=Montserrat&family=Nunito&family=Open+Sans&family=Oswald&family=Pacifico&family=Playfair+Display&family=Poppins&family=Quicksand&family=Raleway&family=Roboto&family=Roboto+Mono&display=swap"
+        rel="stylesheet">
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <!-- html2canvas for downloading -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+
+<body>
+
+    <div class="app-container">
+        <!-- Floating Text Formatting Toolbar -->
+        <div id="text-format-toolbar" class="text-format-toolbar hidden">
+            <button id="decrease-size-btn" class="format-btn" title="Decrease Size">
+                <span class="material-icons-round">text_decrease</span>
+            </button>
+            <button id="increase-size-btn" class="format-btn" title="Increase Size">
+                <span class="material-icons-round">text_increase</span>
+            </button>
+            <button id="bold-btn" class="format-btn" title="Bold">
+                <span class="material-icons-round">format_bold</span>
+            </button>
+            <button id="italic-btn" class="format-btn" title="Italic">
+                <span class="material-icons-round">format_italic</span>
+            </button>
+        </div>
+
+        <!-- Main Preview Area -->
+        <main class="preview-area">
+            <div class="canvas-wrapper">
+                <div id="quote-canvas" class="quote-canvas">
+                    <div class="quote-content">
+                        <p id="quote-text" class="text-element" contenteditable="true" spellcheck="false">Write your quote here...</p>
+                        <p id="author-text" class="author-element" contenteditable="true" spellcheck="false">- Author
+                            Name</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation & Controls -->
+        <footer class="controls-container">
+
+            <!-- Active Tool Options Panel (appears above nav) -->
+            <div id="tool-panel" class="tool-panel hidden">
+                <div class="panel-header">
+                    <span id="panel-title">Options</span>
+                    <button id="close-panel" class="icon-btn"><span class="material-icons-round">close</span></button>
+                </div>
+                <div id="panel-content" class="panel-content">
+                    <!-- Dynamic content injected via JS -->
+                </div>
+            </div>
+
+            <!-- Main Navigation Bar -->
+            <nav class="bottom-nav">
+                <button class="nav-item active" data-tool="background">
+                    <span class="material-icons-round">palette</span>
+                    <span class="nav-label">Background</span>
+                </button>
+                <button class="nav-item" data-tool="text">
+                    <span class="material-icons-round">text_fields</span>
+                    <span class="nav-label">Text</span>
+                </button>
+                <button class="nav-item" data-tool="font">
+                    <span class="material-icons-round">font_download</span>
+                    <span class="nav-label">Font</span>
+                </button>
+                <button class="nav-item" data-tool="layout">
+                    <span class="material-icons-round">format_align_center</span>
+                    <span class="nav-label">Layout</span>
+                </button>
+                <button class="nav-item" data-tool="templates">
+                    <span class="material-icons-round">auto_awesome</span>
+                    <span class="nav-label">Templates</span>
+                </button>
+                <button class="nav-item" data-tool="export">
+                    <span class="material-icons-round">download</span>
+                    <span class="nav-label">Export</span>
+                </button>
+            </nav>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
