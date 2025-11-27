@@ -6,95 +6,208 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quote Designer</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Bangers&family=Dancing+Script&family=Inter:wght@400;700&family=Lato&family=Lobster&family=Merriweather&family=Montserrat&family=Nunito&family=Open+Sans&family=Oswald&family=Pacifico&family=Playfair+Display&family=Poppins&family=Quicksand&family=Raleway&family=Roboto&family=Roboto+Mono&display=swap"
-        rel="stylesheet">
-    <!-- Material Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-    <!-- html2canvas for downloading -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 
 <body>
+    <div class="ShareQuotePage">
+        <!-- Home Button -->
 
-    <div class="app-container">
-        <!-- Floating Text Formatting Toolbar -->
-        <div id="text-format-toolbar" class="text-format-toolbar hidden">
-            <button id="decrease-size-btn" class="format-btn" title="Decrease Size">
-                <span class="material-icons-round">text_decrease</span>
-            </button>
-            <button id="increase-size-btn" class="format-btn" title="Increase Size">
-                <span class="material-icons-round">text_increase</span>
-            </button>
-            <button id="bold-btn" class="format-btn" title="Bold">
-                <span class="material-icons-round">format_bold</span>
-            </button>
-            <button id="italic-btn" class="format-btn" title="Italic">
-                <span class="material-icons-round">format_italic</span>
-            </button>
+
+        <!-- Preview Section -->
+        <div class="viewPort">
+            <p class="preview" style="font-family: amethysta">Preview</p>
+
+            <!-- Quote Container -->
+            <div class="ShareQuoteContainer" id="print">
+                <div class="ShareQuote">
+                    <div class="Quote">
+                        <div class="quoteText" id="quoteRef">
+                            <p id="quoteContent" style="font-size: 25px; color: black; text-align: left;">
+                                Loading quote...
+                            </p>
+                            <div id="authorDiv" style="font-size: 25px; color: black; text-align: left;">
+                                <p id="authorContent"> - Author </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Watermark -->
+                    <p id="watermark" class="watermark"> WisdomWise - Signature Style <i
+                            class="fas fa-check-circle"></i> </p>
+                </div>
+            </div>
         </div>
 
-        <!-- Main Preview Area -->
-        <main class="preview-area">
-            <div class="canvas-wrapper">
-                <div id="quote-canvas" class="quote-canvas">
-                    <div class="quote-content">
-                        <p id="quote-text" class="text-element" contenteditable="true" spellcheck="false">Write your quote here...</p>
-                        <p id="author-text" class="author-element" contenteditable="true" spellcheck="false">- Author
-                            Name</p>
+        <!-- Customization Panel -->
+        <div class="customization">
+            <!-- Signature Styles Panel -->
+            <div class="dynamicUnit" id="sigStylesPanel" style="display: none;">
+                <div class="dynamicUnit__header"></div>
+                <div class="dynamicUnit__content">
+                    <div class="signatureSelector" id="signatureSelector"></div>
+                </div>
+            </div>
+
+            <!-- Background Color Panel -->
+            <div class="dynamicUnit" id="bgColorPanel" style="display: none;">
+                <div class="dynamicUnit__header"></div>
+                <div class="dynamicUnit__content">
+                    <div class="colorSelector" id="bgColorSelector"></div>
+                </div>
+            </div>
+
+            <!-- Text Color Panel -->
+            <div class="dynamicUnit" id="textColorPanel" style="display: none;">
+                <div class="dynamicUnit__header"></div>
+                <div class="dynamicUnit__content">
+                    <div class="colorSelector" id="textColorSelector"></div>
+                </div>
+            </div>
+
+            <!-- Font and Size Panel -->
+            <div class="dynamicUnit" id="fontSizePanel" style="display: none;">
+                <div class="dynamicUnit__header"></div>
+                <div class="dynamicUnit__content">
+                    <div class="fontSelector">
+                        <div class="left">
+                            <p class="font-size-tag">Font Size</p>
+                            <input class="fontSizeInput slider" type="range" min="10" max="50" value="25"
+                                id="fontSizeSlider">
+                        </div>
+                        <div class="right">
+                            <select id="fontSelect">
+                                <option value="Amethysta">Amethysta</option>
+                                <option value="Caveat">Caveat</option>
+                                <option value="Dancing Script">Dancing Script</option>
+                                <option value="Great Vibes">Great Vibes</option>
+                                <option value="Indie Flower">Indie Flower</option>
+                                <option value="Lobster">Lobster</option>
+                                <option value="Pacifico">Pacifico</option>
+                                <option value="Parisienne">Parisienne</option>
+                                <option value="Sacramento">Sacramento</option>
+                                <option value="Shadows Into Light">Shadows Into Light</option>
+                                <option value="Tangerine">Tangerine</option>
+                                <option value="Kalam">Kalam</option>
+                                <option value="Jaini Purva">Jaini Purva</option>
+                                <option value="Rozha One">Rozha One</option>
+                                <option value="Shrikhand">Shrikhand</option>
+                                <option value="Noto Sans">Noto Sans (500)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="margin-top:10px; display:flex; align-items:center; gap:10px;">
+                        <label for="textOpacitySlider" style="color:white; min-width:100px;">Text Opacity</label>
+                        <input id="textOpacitySlider" type="range" min="0" max="100" value="100" />
                     </div>
                 </div>
             </div>
-        </main>
 
-        <!-- Bottom Navigation & Controls -->
-        <footer class="controls-container">
-
-            <!-- Active Tool Options Panel (appears above nav) -->
-            <div id="tool-panel" class="tool-panel hidden">
-                <div class="panel-header">
-                    <span id="panel-title">Options</span>
-                    <button id="close-panel" class="icon-btn"><span class="material-icons-round">close</span></button>
-                </div>
-                <div id="panel-content" class="panel-content">
-                    <!-- Dynamic content injected via JS -->
+            <!-- Text Alignment Panel -->
+            <div class="dynamicUnit" id="alignmentPanel" style="display: none;">
+                <div class="dynamicUnit__header"></div>
+                <div class="dynamicUnit__content">
+                    <div class="alignmentSelector">
+                        <button onclick="setAlignment('left')">
+                            <i class="fas fa-align-left"></i> Left
+                        </button>
+                        <button onclick="setAlignment('center')">
+                            <i class="fas fa-align-center"></i> Center
+                        </button>
+                        <button onclick="setAlignment('right')">
+                            <i class="fas fa-align-right"></i> Right
+                        </button>
+                        <button onclick="setAlignment('justify')">
+                            <i class="fas fa-align-justify"></i> Justify
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Main Navigation Bar -->
-            <nav class="bottom-nav">
-                <button class="nav-item active" data-tool="background">
-                    <span class="material-icons-round">palette</span>
-                    <span class="nav-label">Background</span>
+            <!-- Show/Hide Panel -->
+            <div class="dynamicUnit" id="showHidePanel" style="display: none;">
+                <div class="dynamicUnit__header"></div>
+                <div class="dynamicUnit__content">
+                    <div class="showHideSelector">
+                        <button id="toggleWatermark">Hide Watermark</button>
+                        <button id="toggleAuthor">Hide Author</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Export Panel -->
+            <div class="dynamicUnit" id="exportPanel" style="display: none;">
+                <div class="dynamicUnit__header"></div>
+                <div class="dynamicUnit__content">
+                    <div class="exportSelector">
+                        <div class="heightWidthSelection">
+                            <div class="left">
+                                <select id="selectSize">
+                                    <option value="free-size">Free size</option>
+                                    <option value="square">Instagram Post</option>
+                                    <option value="instagram-story">Instagram Story</option>
+                                    <option value="rectangle">Rectangle</option>
+                                    <option value="tweet-post">X Post</option>
+                                </select>
+                            </div>
+
+                            <div class="centered">
+                                <label for="heightInput">Or Height</label>
+                                <input class="heightInput" type="number" value="1500" id="heightInput">
+
+                                <label for="widthInput">Width</label>
+                                <input class="widthInput" type="number" value="0" id="widthInput">
+                            </div>
+
+                            <div class="right">
+                                <button onclick="downloadImage()">Download</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div style="display: flex; justify-content: center;">
+            <div class="BottomNavigation">
+                <button class="BottomNavigationAction" onclick="showPanel('sigStylesPanel')">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Signatures</span>
                 </button>
-                <button class="nav-item" data-tool="text">
-                    <span class="material-icons-round">text_fields</span>
-                    <span class="nav-label">Text</span>
+                <button class="BottomNavigationAction" onclick="showPanel('bgColorPanel')">
+                    <i class="fa-solid fa-fill"></i>
+                    <span>Background</span>
                 </button>
-                <button class="nav-item" data-tool="font">
-                    <span class="material-icons-round">font_download</span>
-                    <span class="nav-label">Font</span>
+                <button class="BottomNavigationAction" onclick="showPanel('textColorPanel')">
+                    <i class="fas fa-palette"></i>
+                    <span>Color</span>
                 </button>
-                <button class="nav-item" data-tool="layout">
-                    <span class="material-icons-round">format_align_center</span>
-                    <span class="nav-label">Layout</span>
+                <button class="BottomNavigationAction" onclick="showPanel('fontSizePanel')">
+                    <i class="fas fa-font"></i>
+                    <span>Fonts</span>
                 </button>
-                <button class="nav-item" data-tool="templates">
-                    <span class="material-icons-round">auto_awesome</span>
-                    <span class="nav-label">Templates</span>
+                <button class="BottomNavigationAction" onclick="showPanel('alignmentPanel')">
+                    <i class="fas fa-align-left"></i>
+                    <span>Alignments</span>
                 </button>
-                <button class="nav-item" data-tool="export">
-                    <span class="material-icons-round">download</span>
-                    <span class="nav-label">Export</span>
+                <button class="BottomNavigationAction" onclick="showPanel('showHidePanel')">
+                    <i class="fas fa-eye"></i>
+                    <span>Show/Hide</span>
                 </button>
-            </nav>
-        </footer>
+                <button class="BottomNavigationAction" onclick="showPanel('exportPanel')">
+                    <i class="fas fa-download"></i>
+                    <span>Download</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Spacing for bottom navigation -->
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
 
-    <script src="script.js"></script>
+    <script src="app.js"></script>
 </body>
 
 </html>
