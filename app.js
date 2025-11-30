@@ -20,6 +20,8 @@ let appliedSigStyle = null;
 // Preview scale - show smaller preview by default (30% of actual size)
 const PREVIEW_SCALE = 0.3;
 let originalPreviewSize = { width: 0, height: 0 };
+// Whether the preview container is currently scaled for UX (ignore ResizeObserver updates while true)
+let isPreviewScaled = true;
 
 // Signature Styles
 const SigStyles = {
@@ -184,7 +186,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const previewHeight = Math.round(state.height * effectiveScale);
     container.style.height = previewHeight + 'px';
     container.style.width = previewWidth + 'px';
-    
+    // mark that preview is currently scaled (so ResizeObserver won't overwrite the authoritative state)
+    isPreviewScaled = true;
     // Store original preview size for later restoration
     originalPreviewSize = { width: previewWidth, height: previewHeight };
     
@@ -411,6 +414,8 @@ function setupEventListeners() {
     document.getElementById('heightInput').addEventListener('change', (e) => {
         state.height = parseInt(e.target.value);
         document.getElementById('selectSize').value = 'free-size';
+        // user has explicitly changed size — stop treating the preview as scaled
+        isPreviewScaled = false;
         const container = document.getElementById('print');
         container.style.height = state.height + 'px';
     });
@@ -419,6 +424,8 @@ function setupEventListeners() {
     document.getElementById('widthInput').addEventListener('change', (e) => {
         state.width = parseInt(e.target.value);
         document.getElementById('selectSize').value = 'free-size';
+        // user has explicitly changed size — stop treating the preview as scaled
+        isPreviewScaled = false;
         const container = document.getElementById('print');
         container.style.width = state.width + 'px';
     });
@@ -475,6 +482,9 @@ function setupEventListeners() {
     if (window.ResizeObserver) {
         const ro = new ResizeObserver(entries => {
             for (let entry of entries) {
+                // If the preview is scaled for UX, don't overwrite the authoritative state
+                if (isPreviewScaled) continue;
+
                 const cr = entry.contentRect;
                 state.width = Math.round(cr.width);
                 state.height = Math.round(cr.height);
@@ -515,6 +525,8 @@ function handleSize(postSize) {
             break;
         case 'free-size':
             container.style.resize = 'both';
+            // user intends to resize freely — stop treating preview as scaled
+            isPreviewScaled = false;
             break;
         case 'screen-size':
             setHeightWidth(500, 500);
@@ -533,6 +545,8 @@ function setHeightWidth(height, width) {
     container.style.width = width + 'px';
     document.getElementById('heightInput').value = height;
     document.getElementById('widthInput').value = width;
+    // an explicit programmatic size choice should stop preview-scaled mode
+    isPreviewScaled = false;
 }
 
 // Show panel
@@ -653,8 +667,10 @@ async function downloadImage() {
         cloned.style.margin = '0';
         cloned.style.padding = '0';
 
-        // Use scale: 1 to avoid double-scaling issues on mobile
-        const scale = 1;
+        // Use devicePixelRatio (at least 1) to improve image quality on high-DPI devices
+        const devicePR = window.devicePixelRatio || 1;
+        // cap scale to avoid extremely large canvases (3x should be enough for quality)
+        const scale = Math.min(3, Math.max(1, Math.round(devicePR)));
 
         // wait for fonts to be ready to ensure correct rendering
         if (document.fonts && document.fonts.ready) {
