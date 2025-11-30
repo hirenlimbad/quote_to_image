@@ -121,21 +121,6 @@ const SigStyles = {
     }
 };
 
-// Check whether the current state exactly matches a given signature style
-function doesStateMatchSignature(sigStyle) {
-    if (!sigStyle || !SigStyles[sigStyle]) return false;
-    const s = SigStyles[sigStyle];
-
-    const bgMatch = state.bgColor === s.background;
-    const colorMatch = state.textColor === s.color;
-    const fontMatch = state.fonts === s.fontFamily;
-    const alignMatch = state.alignment === s.textAlign;
-    const watermarkMatch = state.showWatermark === !!s.showWatermark;
-    const authorMatch = state.showAuthor === !!s.showAuthor;
-
-    return bgMatch && colorMatch && fontMatch && alignMatch && watermarkMatch && authorMatch;
-}
-
 // Background colors
 const colors = [
     '#d62828', '#14213d', '#03045e', '#073b4c', '#ee9b00', 'red', 'blue', 'green', 'yellow', 'purple', 'pink', 'black', 'white',
@@ -341,34 +326,27 @@ function updateQuoteDisplay() {
 function updateWatermark() {
     const watermark = document.getElementById('watermark');
     
-    // Show "WisdomWise - Signature Style" if:
-    // Condition 1: All default conditions match
+    // Show "WisdomWise - Signature Style" ONLY if:
+    // Rule 1: All default conditions are met AND user hasn't modified critical properties
     // - background: white
     // - text color: black  
     // - alignment: left
     // - font: Amethysta
-    const isDefaultCondition = state.bgColor === 'white' && 
+    // - no manual modifications to these critical props
+    const isDefaultUnmodified = state.bgColor === 'white' && 
                                state.textColor === 'black' && 
                                state.alignment === 'left' && 
-                               state.fonts === 'Amethysta';
+                               state.fonts === 'Amethysta' &&
+                               !userModifiedCriticalProps;
     
-    // OR Condition 2: A signature style is currently applied AND the current state still matches it
-    let isSignatureStyle = false;
-    if (appliedSigStyle !== null) {
-        if (doesStateMatchSignature(appliedSigStyle)) {
-            isSignatureStyle = true;
-        } else {
-            // The user modified something after applying a signature; clear the applied flag
-            appliedSigStyle = null;
-            isSignatureStyle = false;
-        }
-    }
-
+    // Rule 2: A signature style is applied AND user hasn't modified critical properties afterward
+    const hasUnmodifiedSignatureStyle = appliedSigStyle !== null && !userModifiedCriticalProps;
+    
     if (!state.showWatermark) {
         watermark.style.display = 'none';
     } else {
         watermark.style.display = 'block';
-        if (isDefaultCondition || isSignatureStyle) {
+        if (isDefaultUnmodified || hasUnmodifiedSignatureStyle) {
             watermark.innerHTML = 'WisdomWise - Signature Style <i class="fas fa-check-circle"></i>';
         } else {
             watermark.innerHTML = 'WisdomWise';
